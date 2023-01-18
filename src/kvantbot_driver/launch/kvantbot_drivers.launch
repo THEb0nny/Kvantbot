@@ -1,0 +1,5 @@
+<launch>
+	<node name="encoders" pkg="kvantbot_driver" type="encoders" output="screen" />
+	<node name="dc_motors" pkg="kvantbot_driver" type="dc_motors" output="screen" />
+	<include file="$(find kvantbot_driver)/launch/kvantbot_pid.launch" />
+</launch>

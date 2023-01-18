@@ -1,0 +1,30 @@
+<launch>
+	<node name="controller" pkg="pid" type="controller" ns="/kvantbot/left_motor" output="screen" >
+		<param name="node_name" value="left_motor_pid" />
+		<param name="Kp" value="0.62" />
+		<param name="Ki" value="0.0" />
+		<param name="Kd" value="0.03" />
+		<param name="upper_limit" value="10.23" />
+		<param name="lower_limit" value="-10.23" />
+		<param name="windup_limit" value="10.23" />
+		<param name="max_loop_frequency" value="100.0" />
+		<param name="min_loop_frequency" value="100.0" />
+		<remap from="/kvantbot/left_motor/setpoint" to="/kvantbot/left_motor/target_velocity" />
+		<remap from="/kvantbot/left_motor/state" to="/kvantbot/left_motor/current_velocity" />
+		<remap from="/kvantbot/left_motor/control_effort" to="/kvantbot/left_motor/pwm" />
+	</node>
+	<node name="controller" pkg="pid" type="controller" ns="/kvantbot/right_motor" output="screen" >
+		<param name="node_name" value="right_motor_pid" />
+		<param name="Kp" value="0.6" />
+		<param name="Ki" value="0.0" />
+		<param name="Kd" value="0.03" />
+		<param name="upper_limit" value="10.23" />
+		<param name="lower_limit" value="-10.23" />
+		<param name="windup_limit" value="10.23" />
+		<param name="max_loop_frequency" value="100.0" />
+		<param name="min_loop_frequency" value="100.0" />
+		<remap from="/kvantbot/right_motor/setpoint" to="/kvantbot/right_motor/target_velocity" />
+		<remap from="/kvantbot/right_motor/state" to="/kvantbot/right_motor/current_velocity" />
+		<remap from="/kvantbot/right_motor/control_effort" to="/kvantbot/right_motor/pwm" />
+	</node>
+</launch>

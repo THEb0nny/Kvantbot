@@ -1,0 +1,14 @@
+<launch>
+	<arg name="addr" default="/dev/input/js0" />
+	<arg name="use_standard_msgs" default="true" />
+	<arg name="autorepeat_rate" default="50" if="$(arg use_standard_msgs)" />
+	<node respawn="true" pkg="joy" type="joy_node" name="kvantbot_joy" >
+		<param name="dev" type="string" value="$(arg addr)" />
+		<param name="autorepeat_rate" type="double" value="$(arg autorepeat_rate)" if="$(arg use_standard_msgs)" />
+		<param name="deadzone" value="0.1" />
+	</node>
+	<node pkg="kvantbot_teleop" type="kvantbot_teleop" name="kvantbot_teleop" >
+		<param name="linear_speed_scale" type="double" value="0.40"/>
+		<param name="angular_speed_scale" type="double" value="3.57"/>
+	</node>
+</launch>

@@ -1,0 +1,19 @@
+Robot_controller:
+  # Publish all joint states -----------------------------------
+  joint_state_controller:
+    type: joint_state_controller/JointStateController
+    publish_rate: 50
+
+  # Position Controllers --------------------------------------
+  Rev368_position_controller:
+    type: effort_controllers/JointPositionController
+    joint: Rev368
+    pid: {p: 100.0, i: 0.01, d: 10.0}
+  Rev369_position_controller:
+    type: effort_controllers/JointPositionController
+    joint: Rev369
+    pid: {p: 100.0, i: 0.01, d: 10.0}
+  Ball370_position_controller:
+    type: effort_controllers/JointPositionController
+    joint: Ball370
+    pid: {p: 100.0, i: 0.01, d: 10.0}

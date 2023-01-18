@@ -1,0 +1,221 @@
+<?xml version="1.0" ?>
+<robot name="Robot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:include filename="$(find kvantbot_description)/urdf/materials.xacro" />
+  <xacro:include filename="$(find kvantbot_description)/urdf/Robot.trans" />
+  <xacro:include filename="$(find kvantbot_description)/urdf/Robot.gazebo" />
+
+  <xacro:property name="clearance" value="0.00018" />
+  <xacro:property name="wheel_radius" value="0.034"/>
+  <xacro:property name="wheel_separation" value="0.113"/>
+  <xacro:property name="wheel_width" value="0.026"/>
+  <xacro:property name="PI" value="3.1415926"/>
+
+  <link name="kvantbot_base">
+    <inertial>
+      <origin xyz="-0.020202092517560565 0.0005260887150993156 0.07109248054779316" rpy="0 0 0"/>
+      <mass value="0.4385755982388197"/>
+      <inertia ixx="0.001308" iyy="0.001451" izz="0.001284" ixy="-1e-05" iyz="-4e-06" ixz="4e-05"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://kvantbot_description/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="Silver"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://kvantbot_description/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <!-- base_link -->
+	<link name="base_link">
+		<visual>
+			<origin xyz="0 0 0" rpy="0 0 0" />
+			<geometry>
+				<sphere radius="0.001" />
+			</geometry>
+		</visual>
+	</link>
+	<joint name="base_link_to_kvantbot_base" type="fixed">
+		<origin xyz="0 0 0" rpy="0 0 0" />
+		<parent link="base_link" />
+		<child link="kvantbot_base" />
+	</joint>
+
+  <link name="base_footprint">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <cylinder length="0.001" radius="0.10" />
+      </geometry>
+      <material name="Blue" />
+    </visual>
+  </link>
+
+  <joint name="base_footprint_to_base_link" type="fixed">
+    <origin xyz="0 0 ${clearance}" rpy="0 0 0" />
+    <parent link="base_footprint" />
+    <child link="base_link" />
+  </joint>
+
+  <!-- right_wheel -->
+  <link name="kvantbot_right_wheel">
+    <inertial>
+      <origin xyz="-3.5770633534815827e-07 -0.01656589568920546 -2.5876188691764668e-09" rpy="0 0 0"/>
+      <mass value="0.05244256994469984"/>
+      <inertia ixx="2.2e-05" iyy="3.7e-05" izz="2.2e-05" ixy="0.0" iyz="-0.0" ixz="0.0"/>
+    </inertial>
+    <visual>
+      <origin xyz="-0.000668 0.067487 -0.0325" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://kvantbot_description/meshes/right_wheel_1.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="Green" />
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://kvantbot_description/meshes/right_wheel_1.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <!-- right_wheel_geometry -->
+	<link name="right_wheel">
+		<visual>
+			<origin xyz="0 0 0" rpy="${PI/2} 0 0" />
+			<geometry>
+				<cylinder length="${wheel_width}" radius="${wheel_radius}"/>
+			</geometry>
+			<material name="Green" />
+		</visual>
+		<collision>
+			<origin xyz="0 0 0" rpy="${PI/2} 0 0" />
+			<geometry>
+				<cylinder length="${wheel_width}" radius="${wheel_radius}"/>
+			</geometry>
+		</collision>
+	</link>
+	<joint name="right_wheel_to_kvantbot_right_wheel" type="fixed">
+		<origin xyz="0 0 0" rpy="0 0 0" />
+		<parent link="right_wheel" />
+		<child link="kvantbot_right_wheel" />
+	</joint>
+	<joint name="right_wheel_to_base" type="continuous">
+		<origin xyz="0.000668 -0.067487 0.0325" rpy="0 0 0" />
+		<parent link="kvantbot_base" />
+		<child link="right_wheel" />
+		<axis xyz="0 1 0" />
+	</joint>
+
+
+  <!-- left_wheel -->
+  <link name="kvantbot_left_wheel">
+    <inertial>
+      <origin xyz="-3.577063353047902e-07 0.016565631396305583 2.5876188830542546e-09" rpy="0 0 0"/>
+      <mass value="0.052442569718797426"/>
+      <inertia ixx="2.2e-05" iyy="3.7e-05" izz="2.2e-05" ixy="-0.0" iyz="-0.0" ixz="-0.0"/>
+    </inertial>
+    <visual>
+      <origin xyz="-0.000668 -0.067487 -0.0325" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://kvantbot_description/meshes/left_wheel_1.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="Green" />
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://kvantbot_description/meshes/left_wheel_1.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <!-- left_wheel_geometry -->
+  <link name="left_wheel">
+		<visual>
+			<origin xyz="0 0 0" rpy="${PI/2} 0 0" />
+			<geometry>
+				<cylinder length="${wheel_width}" radius="${wheel_radius}"/>
+			</geometry>
+			<material name="Green" />
+		</visual>
+		<collision>
+			<origin xyz="0 0 0" rpy="${PI/2} 0 0" />
+			<geometry>
+				<cylinder length="${wheel_width}" radius="${wheel_radius}"/>
+			</geometry>
+		</collision>
+	</link>
+	<joint name="left_wheel_to_kvantbot_left_wheel" type="fixed">
+		<origin xyz="0 0 0" rpy="0 0 0" />
+		<parent link="left_wheel" />
+		<child link="kvantbot_left_wheel" />
+	</joint>
+	<joint name="left_wheel_to_base" type="continuous">
+		<origin xyz="0.000668 0.067487 0.0325" rpy="0 0 0" />
+		<parent link="kvantbot_base" />
+		<child link="left_wheel" />
+		<axis xyz="0 1 0" />
+	</joint>
+
+  <link name="kvantbot_ball_caster">
+    <inertial>
+      <origin xyz="-1.3212634877857177e-07 -1.3212633551320233e-07 3.8163916471489756e-17" rpy="0 0 0"/>
+      <mass value="0.007238229473870886"/>
+      <inertia ixx="0.0" iyy="0.0" izz="0.0" ixy="-0.0" iyz="-0.0" ixz="-0.0"/>
+    </inertial>
+    <visual>
+      <origin xyz="0.083438 3.1e-05 -0.006" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://kvantbot_description/meshes/ball_caster_1.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="Green"/>
+    </visual>
+    <collision>
+      <origin xyz="0.083438 3.1e-05 -0.006" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://kvantbot_description/meshes/ball_caster_1.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="lidar">
+    <inertial>
+      <origin xyz="-0.00871096824671573 0.00010342703558629792 0.011159180121775525" rpy="0 0 0"/>
+      <mass value="1.0917054357744167"/>
+      <inertia ixx="0.000424" iyy="0.000761" izz="0.000913" ixy="3e-06" iyz="4e-06" ixz="-0.000126"/>
+    </inertial>
+    <visual>
+      <origin xyz="0.016982 3.1e-05 -0.145" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://kvantbot_description/meshes/lidar_1.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="Silver"/>
+    </visual>
+    <collision>
+      <origin xyz="0.016982 3.1e-05 -0.145" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://kvantbot_description/meshes/lidar_1.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="ball_to_base" type="continuous">
+    <origin xyz="-0.083438 -3.1e-05 0.006" rpy="0 0 0"/>
+    <parent link="kvantbot_base"/>
+    <child link="kvantbot_ball_caster"/>
+  </joint>
+
+  <joint name="lidar_to_base" type="fixed">
+    <origin xyz="-0.016982 -3.1e-05 0.145" rpy="0 0 0"/>
+    <parent link="kvantbot_base"/>
+    <child link="lidar"/>
+  </joint>
+
+</robot>
