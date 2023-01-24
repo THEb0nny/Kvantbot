@@ -861,3 +861,4 @@ devel/share/mb_1r2t_ros/cmake/mb_1r2t_rosConfig-version.cmake
 devel/share/mb_1r2t_ros/cmake/mb_1r2t_rosConfig.cmake
 devel/share/servo/cmake/servoConfig-version.cmake
 devel/share/servo/cmake/servoConfig.cmake
+src/mb_1r2t_ros
