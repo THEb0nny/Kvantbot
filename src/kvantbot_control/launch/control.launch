@@ -1,4 +1,4 @@
 <launch>
-	<rosparam file="$(find kvantbot_control)/config/kvantbot_controllers.yaml" command="load" />
+	<rosparam file="$(find kvantbot_control)/config/controllers.yaml" command="load" />
 	<node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="joint_state_controller mobile_kvantbot" ></node>
 </launch>

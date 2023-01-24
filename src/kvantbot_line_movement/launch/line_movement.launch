@@ -1,0 +1,3 @@
+<launch>
+	<node name="line_sensors" pkg="kvantbot_line_movement" type="line_sensors" output="screen" />
+</launch>

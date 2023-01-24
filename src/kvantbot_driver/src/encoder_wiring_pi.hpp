@@ -14,7 +14,7 @@
 namespace EncoderWiringPiISR {
 
 	volatile long encoder_position_1;
-	volatile long  encoder_position_2;
+	volatile long encoder_position_2;
 	volatile uint8_t encoder_state_1;
 	volatile uint8_t encoder_state_2;
 
@@ -36,24 +36,24 @@ namespace EncoderWiringPiISR {
 	}
 
 	void encoderISR1(void) {
-		encoderISR(ENCODER_1_PIN_A, ENCODER_1_PIN_B,  encoder_position_1, encoder_state_1);
+		encoderISR(ENCODER_1_PIN_A, ENCODER_1_PIN_B, encoder_position_1, encoder_state_1);
 	}
 
 	void encoderISR2(void) {
-		encoderISR(ENCODER_2_PIN_A, ENCODER_2_PIN_B,  encoder_position_2, encoder_state_2);
+		encoderISR(ENCODER_2_PIN_A, ENCODER_2_PIN_B, encoder_position_2, encoder_state_2);
 	}
 }
 
 class EncoderWiringPi {
-public:
-	EncoderWiringPi(const int &pin_A, const int &pin_B, void (*isrFunction)(void), volatile long* encoder_position);
-	double getAngle();
-private:
-	int _pin_A;
-	int _pin_B;
-	volatile long* _encoder_position;
-	double _initial_angle;
-	double ticks2Angle(long position);
+	public:
+		EncoderWiringPi(const int &pin_A, const int &pin_B, void (*isrFunction)(void), volatile long* encoder_position);
+		double getAngle();
+	private:
+		int _pin_A;
+		int _pin_B;
+		volatile long* _encoder_position;
+		double _initial_angle;
+		double ticks2Angle(long position);
 };
 
 EncoderWiringPi::EncoderWiringPi(const int &pin_A, const int &pin_B, void (*isrFunction)(void), volatile long* encoder_position) {

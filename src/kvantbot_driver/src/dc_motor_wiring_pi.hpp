@@ -2,12 +2,12 @@
 #define DC_MOTOR_WIRING_PI_H_
 
 #include <ros/ros.h>
-#include <GpioExpanderPi.h>
 #include <wiringPi.h>
+//#include <GpioExpanderPi.h>
 
 #define RPI_MAX_PWM_VALUE 1023
 
-GpioExpanderPi expander;
+//GpioExpanderPi expander;
 
 class DCMotorWiringPi {
 	public:
@@ -27,8 +27,10 @@ DCMotorWiringPi::DCMotorWiringPi(int8_t in1_pin, int8_t in2_pin, int8_t pwm_pin)
 	_in2_pin = in2_pin;
 	_pwm_pin = pwm_pin;
 
+	/*
 	if (!expander.begin())
 		printf("Failed to init I2C communication.\n");
+	*/
 
 	if (wiringPiSetupGpio() < 0) {
 		ROS_ERROR("DCMotor wiringPi error: GPIO setup error");

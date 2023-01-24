@@ -6,37 +6,37 @@
 typedef boost::chrono::steady_clock time_source;
 
 class EncodersPair {
-public:
-	EncodersPair(double update_rate);
+	public:
+		EncodersPair(double update_rate);
 
-private:
-	ros::NodeHandle node;
+	private:
+		ros::NodeHandle node;
 
-	ros::Publisher left_motor_angle_pub;
-	ros::Publisher right_motor_angle_pub;
-	ros::Publisher left_motor_velocity_pub;
-	ros::Publisher right_motor_velocity_pub;
+		ros::Publisher left_motor_angle_pub;
+		ros::Publisher right_motor_angle_pub;
+		ros::Publisher left_motor_velocity_pub;
+		ros::Publisher right_motor_velocity_pub;
 
-	ros::Timer encoders_timer;
+		ros::Timer encoders_timer;
 
-	std_msgs::Float64 left_motor_angle_msg;
-	std_msgs::Float64 right_motor_angle_msg;
-	std_msgs::Float64 left_motor_velocity_msg;
-	std_msgs::Float64 right_motor_velocity_msg;
+		std_msgs::Float64 left_motor_angle_msg;
+		std_msgs::Float64 right_motor_angle_msg;
+		std_msgs::Float64 left_motor_velocity_msg;
+		std_msgs::Float64 right_motor_velocity_msg;
 
-	EncoderWiringPi encoder_left;
-	EncoderWiringPi encoder_right;
+		EncoderWiringPi encoder_left;
+		EncoderWiringPi encoder_right;
 
-	double left_motor_angle;
-	double right_motor_angle;
-	double left_motor_velocity;
-	double right_motor_velocity;
-	double left_motor_position;
-	double right_motor_position;
+		double left_motor_angle;
+		double right_motor_angle;
+		double left_motor_velocity;
+		double right_motor_velocity;
+		double left_motor_position;
+		double right_motor_position;
 
-	time_source::time_point last_time;
+		time_source::time_point last_time;
 
-	void encodersCallback(const ros::TimerEvent& event);
+		void encodersCallback(const ros::TimerEvent& event);
 };
 
 EncodersPair::EncodersPair(double update_rate) :
