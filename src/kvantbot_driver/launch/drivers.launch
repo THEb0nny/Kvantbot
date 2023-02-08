@@ -2,4 +2,7 @@
 	<node name="encoders" pkg="kvantbot_driver" type="encoders" output="screen" />
 	<node name="dc_motors" pkg="kvantbot_driver" type="dc_motors" output="screen" />
 	<include file="$(find kvantbot_driver)/launch/pid.launch" />
+	<node name="line_sensors" pkg="kvantbot_driver" type="line_sensors" output="screen" />
+	<node name="btn_module" pkg="kvantbot_driver" type="btn_module" output="screen" />
+	<node name="buzzer_module" pkg="kvantbot_driver" type="buzzer_module" output="screen" />
 </launch>

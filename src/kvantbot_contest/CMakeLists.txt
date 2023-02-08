@@ -1,8 +1,9 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(kvantbot_line_movement)
+project(kvantbot_contest)
 
 find_package(catkin REQUIRED COMPONENTS
   roscpp
+  rospy
   std_msgs
 )
 
@@ -17,6 +18,3 @@ include_directories(
 # include
   ${catkin_INCLUDE_DIRS}
 )
-
-add_executable(line_sensors src/line_sensors.cpp)
-target_link_libraries(line_sensors ${catkin_LIBRARIES} -lGpioExpanderPi -lpthread -lcrypt -lm -lrt)
