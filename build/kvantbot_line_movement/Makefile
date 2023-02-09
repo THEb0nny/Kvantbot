@@ -167,48 +167,6 @@ depend:
 	cd /home/ubuntu/ros_workspace/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
-# Convenience name for target.
-kvantbot_line_movement/CMakeFiles/line_sensors.dir/rule:
-	cd /home/ubuntu/ros_workspace/build && $(MAKE) -f CMakeFiles/Makefile2 kvantbot_line_movement/CMakeFiles/line_sensors.dir/rule
-.PHONY : kvantbot_line_movement/CMakeFiles/line_sensors.dir/rule
-
-# Convenience name for target.
-line_sensors: kvantbot_line_movement/CMakeFiles/line_sensors.dir/rule
-
-.PHONY : line_sensors
-
-# fast build rule for target.
-line_sensors/fast:
-	cd /home/ubuntu/ros_workspace/build && $(MAKE) -f kvantbot_line_movement/CMakeFiles/line_sensors.dir/build.make kvantbot_line_movement/CMakeFiles/line_sensors.dir/build
-.PHONY : line_sensors/fast
-
-src/line_sensors.o: src/line_sensors.cpp.o
-
-.PHONY : src/line_sensors.o
-
-# target to build an object file
-src/line_sensors.cpp.o:
-	cd /home/ubuntu/ros_workspace/build && $(MAKE) -f kvantbot_line_movement/CMakeFiles/line_sensors.dir/build.make kvantbot_line_movement/CMakeFiles/line_sensors.dir/src/line_sensors.cpp.o
-.PHONY : src/line_sensors.cpp.o
-
-src/line_sensors.i: src/line_sensors.cpp.i
-
-.PHONY : src/line_sensors.i
-
-# target to preprocess a source file
-src/line_sensors.cpp.i:
-	cd /home/ubuntu/ros_workspace/build && $(MAKE) -f kvantbot_line_movement/CMakeFiles/line_sensors.dir/build.make kvantbot_line_movement/CMakeFiles/line_sensors.dir/src/line_sensors.cpp.i
-.PHONY : src/line_sensors.cpp.i
-
-src/line_sensors.s: src/line_sensors.cpp.s
-
-.PHONY : src/line_sensors.s
-
-# target to generate assembly for a file
-src/line_sensors.cpp.s:
-	cd /home/ubuntu/ros_workspace/build && $(MAKE) -f kvantbot_line_movement/CMakeFiles/line_sensors.dir/build.make kvantbot_line_movement/CMakeFiles/line_sensors.dir/src/line_sensors.cpp.s
-.PHONY : src/line_sensors.cpp.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -222,10 +180,6 @@ help:
 	@echo "... edit_cache"
 	@echo "... install"
 	@echo "... test"
-	@echo "... line_sensors"
-	@echo "... src/line_sensors.o"
-	@echo "... src/line_sensors.i"
-	@echo "... src/line_sensors.s"
 .PHONY : help
 
 

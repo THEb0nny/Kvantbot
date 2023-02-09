@@ -15,7 +15,7 @@ GpioExpanderPi.h
 /home/ubuntu/ros_workspace/src/kvantbot_line_movement/src/line_sensors.cpp
 line_sensor.hpp
 /home/ubuntu/ros_workspace/src/kvantbot_line_movement/src/line_sensor.hpp
-std_msgs/Float64.h
+std_msgs/Int16.h
 -
 std_msgs/Time.h
 -
@@ -670,7 +670,7 @@ ros/forwards.h
 
 /opt/ros/noetic/include/rosconsole/macros_generated.h
 
-/opt/ros/noetic/include/std_msgs/Float64.h
+/opt/ros/noetic/include/std_msgs/Int16.h
 string
 -
 vector

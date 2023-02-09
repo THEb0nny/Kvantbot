@@ -59,7 +59,7 @@ kvantbot_line_movement/CMakeFiles/line_sensors.dir/src/line_sensors.cpp.o: /opt/
 kvantbot_line_movement/CMakeFiles/line_sensors.dir/src/line_sensors.cpp.o: /opt/ros/noetic/include/ros/wall_timer.h
 kvantbot_line_movement/CMakeFiles/line_sensors.dir/src/line_sensors.cpp.o: /opt/ros/noetic/include/ros/wall_timer_options.h
 kvantbot_line_movement/CMakeFiles/line_sensors.dir/src/line_sensors.cpp.o: /opt/ros/noetic/include/rosconsole/macros_generated.h
-kvantbot_line_movement/CMakeFiles/line_sensors.dir/src/line_sensors.cpp.o: /opt/ros/noetic/include/std_msgs/Float64.h
+kvantbot_line_movement/CMakeFiles/line_sensors.dir/src/line_sensors.cpp.o: /opt/ros/noetic/include/std_msgs/Int16.h
 kvantbot_line_movement/CMakeFiles/line_sensors.dir/src/line_sensors.cpp.o: /opt/ros/noetic/include/std_msgs/Time.h
 kvantbot_line_movement/CMakeFiles/line_sensors.dir/src/line_sensors.cpp.o: /opt/ros/noetic/include/xmlrpcpp/XmlRpcDecl.h
 kvantbot_line_movement/CMakeFiles/line_sensors.dir/src/line_sensors.cpp.o: /opt/ros/noetic/include/xmlrpcpp/XmlRpcValue.h

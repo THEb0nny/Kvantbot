@@ -1,7 +1,5 @@
 #include "buzzer_module.hpp"
 #include <std_msgs/Bool.h>
-#include <std_msgs/Time.h>
-#include <boost/thread.hpp>
 #include <chrono>
 
 // Пинs модуля пльезопищалки через плату расширения Troyka Hat
@@ -12,17 +10,9 @@ BuzzerModuleGpioExpPi buzzer_module(BUZZER_MODULE_PIN);
 
 void buzzerModuleCallback(const std_msgs::Bool& msg) {
 	if (msg.data) {
-		//ROS_INFO("Buzzer ON!\n");
-		/*if (threadPlayTone.get_id() == false) {
-			//buzzer_module.tonePlays = true;
-			using namespace boost;
-			thread threadPlayTone = thread(&BuzzerModuleGpioExpPi::playTone, buzzer_module);
-		}*/
-		//threadPlayTone.join();
 		buzzer_module.startTone();
 		//buzzer_module.on();
 	} else {
-		//ROS_INFO("Buzzer OFF!\n");
 		buzzer_module.off();
 	}
 }

@@ -90,8 +90,7 @@ void BuzzerModuleGpioExpPi::startTone() {
 }
 
 void BuzzerModuleGpioExpPi::playTone() {
-	ROS_INFO("Buzzer play interrupted!\n");
-	//ROS_INFO("_threadPlayToneState = %s\n", _threadPlayToneState ? "true" : "false");
+	ROS_INFO("Buzzer play!\n");
 	for(int i = 0; i < sizeof(song_1) / 4; i++) {
 		if(!_threadPlayToneState) { // Если флажок установили на false, тогда нужно прервать проигрывание немедленно
 			break;

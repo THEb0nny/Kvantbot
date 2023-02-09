@@ -60,7 +60,7 @@ kvantbot_line_movement/CMakeFiles/line_sensors.dir/src/line_sensors.cpp.o
  /opt/ros/noetic/include/ros/wall_timer.h
  /opt/ros/noetic/include/ros/wall_timer_options.h
  /opt/ros/noetic/include/rosconsole/macros_generated.h
- /opt/ros/noetic/include/std_msgs/Float64.h
+ /opt/ros/noetic/include/std_msgs/Int16.h
  /opt/ros/noetic/include/std_msgs/Time.h
  /opt/ros/noetic/include/xmlrpcpp/XmlRpcDecl.h
  /opt/ros/noetic/include/xmlrpcpp/XmlRpcValue.h
