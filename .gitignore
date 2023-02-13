@@ -1033,3 +1033,5 @@ build/kvantbot_mb_1r2t/catkin_generated/installspace/mb_1r2t_rosConfig-version.c
 build/kvantbot_mb_1r2t/catkin_generated/installspace/mb_1r2t_rosConfig.cmake
 build/kvantbot_mb_1r2t/catkin_generated/stamps/mb_1r2t_ros/package.xml.stamp
 build/kvantbot_mb_1r2t/catkin_generated/stamps/mb_1r2t_ros/pkg.pc.em.stamp
+build/kvantbot_contest/catkin_generated/installspace/traffic_sign_detect.py
+build/kvantbot_contest/catkin_generated/stamps/kvantbot_contest/traffic_sign_detect.py.stamp

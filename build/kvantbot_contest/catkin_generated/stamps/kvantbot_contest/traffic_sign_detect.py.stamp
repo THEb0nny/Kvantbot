@@ -25,9 +25,7 @@ flann = cv2.FlannBasedMatcher(index_params, search_params)
 def cbImageProjection(data):
     global kp_ideal, des_ideal, sift, counter, flann
 
-    #rospy.loginfo(counter)
-
-    if counter % 3 != 0:
+    if counter % 6 != 0:
         counter += 1
         return
     else:
@@ -52,7 +50,7 @@ def cbImageProjection(data):
                 sign_msg.data = "reversal"
             break
         else:
-            sign_mgs.data = "none"
+            sign_msg.data = "none"
         
     print(sign_msg.data)
     pub_sign.publish(sign_msg)
@@ -78,7 +76,7 @@ def compare_matches(kp, kp_ideal, matches):
 def find_mse(arr1, arr2):
     err = (arr1 - arr2) ** 2
     sum_err = err.sum()
-    suze = arr1.shape[0]
+    size = arr1.shape[0]
     sum_err = sum_err / size
     return sum_err
 
