@@ -1,10 +1,10 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import rospy
 import numpy as np
 import cv2
 
-from sensor_msgs.msgs import Image, CompressedImage
+from sensor_msgs.msg import Image, CompressedImage
 from cv_bridge import CvBridge
 
 import math
@@ -25,6 +25,8 @@ flann = cv2.FlannBasedMatcher(index_params, search_params)
 def cbImageProjection(data):
     global kp_ideal, des_ideal, sift, counter, flann
 
+    rospy.loginfo(counter)
+
     if counter % 3 != 0:
         counter += 1
         return
@@ -35,7 +37,7 @@ def cbImageProjection(data):
     cv_image_gray = cv2.cvtColor(cv_image_original, cv2.COLOR_BGR2GRAY)
     kp, des = sift.detectAndCompute(cv_image_gray, None)
     cv_image_original = cv2.drawKeypoints(cv_image_gray, kp, None, (255, 0, 0), 4)
-    for i in range(0, 3):
+    for i in range(0, 4):
         matches = flann.knnMatch(des, des_ideal[i], k = 2)
         result = compare_matches(kp, kp_ideal[i], matches)
         sign_msg = String()
@@ -43,16 +45,19 @@ def cbImageProjection(data):
             if i == 0:
                 sign_msg.data = "stop"
             elif i == 1:
-                sign_msg.data = "parking"
-            else:
-                sign_msg.data = "tunnel"
+                sign_msg.data = "turn_left"
+            elif i == 2:
+                sign_msg.data = "turn_right"
+            elif i == 3:
+                sign_msg.data = "reversal"
             break
         else:
             sign_mgs.data = "none"
         
-    print sign_msg.data
+    print(sign_msg.data)
     pub_sign.publish(sign_msg)
     pub_image.publish(cvBridge.cv2_to_imgmsg(cv_image_original, "rgb8"))
+    rospy.loginfo(3)
 
 def compare_matches(kp, kp_ideal, matches):
     MATCHES_ERR = 50000
@@ -65,6 +70,7 @@ def compare_matches(kp, kp_ideal, matches):
     if len(good) > MATCHES_DIST_MIN:
         src_pts = np.float32([kp[m.queryIdx].pt for m in good])
         dst_pts = np.float32([kp_ideal[m.trainIdx].pt for m in good])
+        #sift = cv2.SIFT_create()
         mse_err = find_mse(src_pts, dst_pts)
         print("mse_err: ", mse_err)
         if mse_err < MATCHES_ERR:
@@ -80,22 +86,24 @@ def find_mse(arr1, arr2):
 
 def standart_signs():
     dir_path = os.path.dirname(os.path.realpath(__file__))
-    dir_path = dir_path.raplace('myRace/src', 'myRace/')
+    dir_path = dir_path.replace('kvantbot_contest/src', 'kvantbot_contest/')
     dir_path += 'data_set/detect_sign/'
-    img1 = cv2.imread(dir_path + 'stop.png', 0)
-    img2 = cv2.imread(dir_path + 'parking.png', 0)
-    img3 = cv2.imread(dir_path + 'tunnel.png', 0)
-    sift = cv2.xdeatures2d.SIFT_create()
+    img1 = cv2.imread(dir_path + 'stop.jpg', 0)
+    img2 = cv2.imread(dir_path + 'turn_left.jpg', 0)
+    img3 = cv2.imread(dir_path + 'turn_right.jpg', 0)
+    img4 = cv2.imread(dir_path + 'reversal.jpg', 0)
+    sift = cv2.SIFT_create()
     kp1, des1 = sift.detectAndCompute(img1, None)
     kp2, des2 = sift.detectAndCompute(img2, None)
     kp3, des3 = sift.detectAndCompute(img3, None)
-    kp_ideal = [kp1, kp2, kp3]
-    des_ideal = [des1, des2, des3]
+    kp4, des4 = sift.detectAndCompute(img4, None)
+    kp_ideal = [kp1, kp2, kp3, kp4]
+    des_ideal = [des1, des2, des3, des4]
     return kp_ideal, des_ideal, sift
 
 if __name__ == '__main__':
     rospy.init_node('image_projection')
-    sum_image = rospy.Subscriber('/camera/image', Image, cbImageProjection, queue_size = 1)
+    sum_image = rospy.Subscriber('/usb_cam/image_raw', Image, cbImageProjection, queue_size = 1)
     kp_ideal, des_ideal, sift = standart_signs()
     while not rospy.is_shutdown():
         try:

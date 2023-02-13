@@ -18,3 +18,7 @@ include_directories(
 # include
   ${catkin_INCLUDE_DIRS}
 )
+
+catkin_install_python(PROGRAMS src/traffic_sign_detect.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)

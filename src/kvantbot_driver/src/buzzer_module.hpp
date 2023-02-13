@@ -92,9 +92,6 @@ void BuzzerModuleGpioExpPi::startTone() {
 void BuzzerModuleGpioExpPi::playTone() {
 	ROS_INFO("Buzzer play!\n");
 	for(int i = 0; i < sizeof(song_1) / 4; i++) {
-		if(!_threadPlayToneState) { // Если флажок установили на false, тогда нужно прервать проигрывание немедленно
-			break;
-		}
 		ros::Time start_time = ros::Time::now();
 		ros::Duration timeout((beat_1[i] * 250.0) / 1000.0);
 		softToneWrite(_in_pin, song_1[i]);
@@ -102,7 +99,8 @@ void BuzzerModuleGpioExpPi::playTone() {
 		while(ros::Time::now() - start_time < timeout) {
 			if(!_threadPlayToneState) { // Если флажок установили на false, тогда нужно прервать проигрывание немедленно
 				ROS_INFO("Buzzer play interrupted!\n");
-				break;
+				_threadPlayToneState = false; // Проигрывание мелодии завершено
+				return;
 			}
 		}
 	}

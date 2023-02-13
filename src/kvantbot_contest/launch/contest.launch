@@ -1,3 +1,4 @@
 <launch>
 	<include file="$(find kvantbot_driver)/launch/cam.launch" />
+	<node name="traffic_sign" pkg="kvantbot_contest" type="traffic_sign_detect.py" output="screen" />
 </launch>
