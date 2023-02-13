@@ -13,6 +13,12 @@ import os
 from time import sleep
 from std_msgs.msg import String
 
+MATCHES_ERR = 60000
+MATCHES_DIST_MIN = 5
+
+IMG_WIDTH, IMG_HEIGHT = 320, 240
+X_OFFSET, Y_OFFSET = 60, 40
+
 pub_image = rospy.Publisher('sign_image', Image, queue_size = 1)
 pub_sign = rospy.Publisher('sign', String, queue_size = 1)
 cvBridge = CvBridge()
@@ -25,9 +31,7 @@ flann = cv2.FlannBasedMatcher(index_params, search_params)
 def cbImageProjection(data):
     global kp_ideal, des_ideal, sift, counter, flann
 
-    #rospy.loginfo(counter)
-
-    if counter % 3 != 0:
+    if counter % 10 != 0:
         counter += 1
         return
     else:
@@ -35,8 +39,11 @@ def cbImageProjection(data):
     
     cv_image_original = cvBridge.imgmsg_to_cv2(data, "bgr8")
     cv_image_gray = cv2.cvtColor(cv_image_original, cv2.COLOR_BGR2GRAY)
-    kp, des = sift.detectAndCompute(cv_image_gray, None)
-    cv_image_original = cv2.drawKeypoints(cv_image_gray, kp, None, (255, 0, 0), 4)
+    cv_image_gray_crop = cv_image_gray[Y_OFFSET:IMG_HEIGHT - Y_OFFSET, X_OFFSET:IMG_WIDTH - X_OFFSET]
+    #kp, des = sift.detectAndCompute(cv_image_gray, None)
+    kp, des = sift.detectAndCompute(cv_image_gray_crop, None)
+    #cv_image_original = cv2.drawKeypoints(cv_image_gray, kp, None, (255, 0, 0), 4)
+    cv_image_original_crop = cv2.drawKeypoints(cv_image_gray_crop, kp, None, (255, 0, 0), 4)
     for i in range(0, 4):
         matches = flann.knnMatch(des, des_ideal[i], k = 2)
         result = compare_matches(kp, kp_ideal[i], matches)
@@ -52,16 +59,13 @@ def cbImageProjection(data):
                 sign_msg.data = "reversal"
             break
         else:
-            sign_mgs.data = "none"
+            sign_msg.data = "none"
         
     print(sign_msg.data)
     pub_sign.publish(sign_msg)
-    pub_image.publish(cvBridge.cv2_to_imgmsg(cv_image_original, "rgb8"))
-    rospy.loginfo(3)
+    pub_image.publish(cvBridge.cv2_to_imgmsg(cv_image_original_crop, "rgb8"))
 
 def compare_matches(kp, kp_ideal, matches):
-    MATCHES_ERR = 50000
-    MATCHES_DIST_MIN = 7
     good = []
     for m, n in matches:
         if m.distance < 0.7 * n.distance:
@@ -79,7 +83,7 @@ def compare_matches(kp, kp_ideal, matches):
 def find_mse(arr1, arr2):
     err = (arr1 - arr2) ** 2
     sum_err = err.sum()
-    suze = arr1.shape[0]
+    size = arr1.shape[0]
     sum_err = sum_err / size
     return sum_err
 
@@ -87,10 +91,10 @@ def standart_signs():
     dir_path = os.path.dirname(os.path.realpath(__file__))
     dir_path = dir_path.replace('kvantbot_contest/src', 'kvantbot_contest/')
     dir_path += 'data_set/detect_sign/'
-    img1 = cv2.imread(dir_path + 'stop.jpg', 0)
-    img2 = cv2.imread(dir_path + 'turn_left.jpg', 0)
-    img3 = cv2.imread(dir_path + 'turn_right.jpg', 0)
-    img4 = cv2.imread(dir_path + 'reversal.jpg', 0)
+    img1 = cv2.imread(dir_path + 'stop.png', 0)
+    img2 = cv2.imread(dir_path + 'turn_left.png', 0)
+    img3 = cv2.imread(dir_path + 'turn_right.png', 0)
+    img4 = cv2.imread(dir_path + 'reversal.png', 0)
     sift = cv2.SIFT_create()
     kp1, des1 = sift.detectAndCompute(img1, None)
     kp2, des2 = sift.detectAndCompute(img2, None)
@@ -102,8 +106,8 @@ def standart_signs():
 
 if __name__ == '__main__':
     rospy.init_node('image_projection')
-    sum_image = rospy.Subscriber('/usb_cam/image_raw', Image, cbImageProjection, queue_size = 1)
     kp_ideal, des_ideal, sift = standart_signs()
+    sum_image = rospy.Subscriber('/usb_cam/image_raw', Image, cbImageProjection, queue_size = 1)
     while not rospy.is_shutdown():
         try:
             rospy.sleep(0.1)

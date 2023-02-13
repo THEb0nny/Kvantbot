@@ -25,7 +25,7 @@ flann = cv2.FlannBasedMatcher(index_params, search_params)
 def cbImageProjection(data):
     global kp_ideal, des_ideal, sift, counter, flann
 
-    rospy.loginfo(counter)
+    #rospy.loginfo(counter)
 
     if counter % 3 != 0:
         counter += 1
@@ -57,7 +57,6 @@ def cbImageProjection(data):
     print(sign_msg.data)
     pub_sign.publish(sign_msg)
     pub_image.publish(cvBridge.cv2_to_imgmsg(cv_image_original, "rgb8"))
-    rospy.loginfo(3)
 
 def compare_matches(kp, kp_ideal, matches):
     MATCHES_ERR = 50000
@@ -70,7 +69,6 @@ def compare_matches(kp, kp_ideal, matches):
     if len(good) > MATCHES_DIST_MIN:
         src_pts = np.float32([kp[m.queryIdx].pt for m in good])
         dst_pts = np.float32([kp_ideal[m.trainIdx].pt for m in good])
-        #sift = cv2.SIFT_create()
         mse_err = find_mse(src_pts, dst_pts)
         print("mse_err: ", mse_err)
         if mse_err < MATCHES_ERR:
@@ -103,8 +101,8 @@ def standart_signs():
 
 if __name__ == '__main__':
     rospy.init_node('image_projection')
-    sum_image = rospy.Subscriber('/usb_cam/image_raw', Image, cbImageProjection, queue_size = 1)
     kp_ideal, des_ideal, sift = standart_signs()
+    sum_image = rospy.Subscriber('/usb_cam/image_raw', Image, cbImageProjection, queue_size = 1)
     while not rospy.is_shutdown():
         try:
             rospy.sleep(0.1)
