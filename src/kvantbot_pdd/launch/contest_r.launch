@@ -1,0 +1,4 @@
+<launch>
+	<include file="$(find kvantbot_driver)/launch/cam.launch" />
+	<include file="$(find kvantbot_driver)/launch/drivers.launch" />
+</launch>

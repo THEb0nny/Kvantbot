@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>kvantbot_contest</name>
+  <name>kvantbot_pdd</name>
   <version>0.1.0</version>
-  <description>The kvantbot_contest package</description>
+  <description>The kvantbot_pdd package</description>
   <maintainer email="bonny1995@gmail.com">bonny</maintainer>
   <license>TODO</license>
 

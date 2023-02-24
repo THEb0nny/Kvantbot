@@ -14,50 +14,50 @@ import os
 from time import sleep
 from std_msgs.msg import String
 
-MATCHES_ERR = 80000
-MATCHES_DIST_MIN = 5
-
-IMG_WIDTH, IMG_HEIGHT = 640, 480
-X_OFFSET, Y_OFFSET = 200, 130
+IMG_WIDTH, IMG_HEIGHT = 320, 240
+X_OFFSET, Y_OFFSET = 100, 40
 
 pub_image = rospy.Publisher('sign_image', Image, queue_size = 1)
 pub_sign = rospy.Publisher('sign', String, queue_size = 1)
 cvBridge = CvBridge()
 counter = 1
 FLANN_INDEX_KDTREE = 0
-index_params = dict(algorithm = FLANN_INDEX_KDTREE, trees = 5)
-search_params = dict(checks = 50)
+index_params = dict(algorithm = FLANN_INDEX_KDTREE, trees = 50)
+search_params = dict(checks = 100)
 flann = cv2.FlannBasedMatcher(index_params, search_params)
+
+MATCHES_ERR = 80000
+MATCHES_DIST_MIN = 7
 
 def cbImageProjection(data):
     global kp_ideal, des_ideal, sift, counter, flann
 
-    if counter % 3 != 0:
+    if counter % 2 != 0:
         counter += 1
         return
     else:
         counter = 1
 
     t1 = time.time()
-    #print(round(t1 * 1000))
     
     cv_image_original = cvBridge.imgmsg_to_cv2(data, "bgr8")
-    cv_image_gray = cv2.cvtColor(cv_image_original, cv2.COLOR_BGR2GRAY)
-    cv_image_gray = cv2.flip(cv_image_gray, 0)
-    cv_image_gray_crop = cv_image_gray[Y_OFFSET:IMG_HEIGHT - Y_OFFSET, X_OFFSET:IMG_WIDTH - X_OFFSET]
-    #kp, des = sift.detectAndCompute(cv_image_gray, None)
+    cv_image_original = cv2.flip(cv_image_original, -1) # Перевернуть и отзеркалить
+    cv_image_crop = cv_image_original[Y_OFFSET:IMG_HEIGHT - Y_OFFSET, X_OFFSET:IMG_WIDTH - X_OFFSET]
+    cv_image_gray_crop = cv2.cvtColor(cv_image_crop, cv2.COLOR_BGR2GRAY)
     kp, des = sift.detectAndCompute(cv_image_gray_crop, None)
-    #cv_image_original = cv2.drawKeypoints(cv_image_gray, kp, None, (255, 0, 0), 4)
-    cv_image_original_crop = cv2.drawKeypoints(cv_image_gray_crop, kp, None, (255, 0, 0), 4)
+    cv_image_gray_crop = cv2.drawKeypoints(cv_image_gray_crop, kp, None, (255, 0, 0), 4)
     for i in range(0, 4):
         matches = flann.knnMatch(des, des_ideal[i], k = 2)
-        result = compare_matches(kp, kp_ideal[i], matches)
+        result, mse_err = compare_matches(kp, kp_ideal[i], matches)
         sign_msg = String()
         if result == True:
             if i == 0:
                 sign_msg.data = "stop"
             elif i == 1:
-                sign_msg.data = "turn_left"
+                if mse_err > 40000:
+                    sign_msg.data = "turn_left"
+                else:
+                    sign_msg.data = "turn_right"   
             elif i == 2:
                 sign_msg.data = "turn_right"
             elif i == 3:
@@ -68,11 +68,13 @@ def cbImageProjection(data):
         
     print(sign_msg.data)
     pub_sign.publish(sign_msg)
-    pub_image.publish(cvBridge.cv2_to_imgmsg(cv_image_original_crop, "rgb8"))
+    cv_image_gray_crop = cv2.flip(cv_image_gray_crop, -1) # Перевернуть и отзеркалить
+    pub_image.publish(cvBridge.cv2_to_imgmsg(cv_image_gray_crop, "rgb8"))
     t2 = time.time()
     print(round((t2 - t1) * 1000))
 
 def compare_matches(kp, kp_ideal, matches):
+    mse_err = 0
     good = []
     for m, n in matches:
         if m.distance < 0.7 * n.distance:
@@ -84,8 +86,8 @@ def compare_matches(kp, kp_ideal, matches):
         mse_err = find_mse(src_pts, dst_pts)
         print("mse_err: ", mse_err)
         if mse_err < MATCHES_ERR:
-            return True
-    return False
+            return True, mse_err
+    return False, mse_err
 
 def find_mse(arr1, arr2):
     err = (arr1 - arr2) ** 2

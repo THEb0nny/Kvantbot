@@ -3,6 +3,7 @@
 import rospy
 import numpy as np
 import cv2
+import time
 
 from sensor_msgs.msg import Image, CompressedImage
 from cv_bridge import CvBridge
@@ -12,6 +13,12 @@ import os
 
 from time import sleep
 from std_msgs.msg import String
+
+MATCHES_ERR = 80000
+MATCHES_DIST_MIN = 5
+
+IMG_WIDTH, IMG_HEIGHT = 640, 480
+X_OFFSET, Y_OFFSET = 200, 130
 
 pub_image = rospy.Publisher('sign_image', Image, queue_size = 1)
 pub_sign = rospy.Publisher('sign', String, queue_size = 1)
@@ -25,16 +32,23 @@ flann = cv2.FlannBasedMatcher(index_params, search_params)
 def cbImageProjection(data):
     global kp_ideal, des_ideal, sift, counter, flann
 
-    if counter % 6 != 0:
+    if counter % 3 != 0:
         counter += 1
         return
     else:
         counter = 1
+
+    t1 = time.time()
+    #print(round(t1 * 1000))
     
     cv_image_original = cvBridge.imgmsg_to_cv2(data, "bgr8")
     cv_image_gray = cv2.cvtColor(cv_image_original, cv2.COLOR_BGR2GRAY)
-    kp, des = sift.detectAndCompute(cv_image_gray, None)
-    cv_image_original = cv2.drawKeypoints(cv_image_gray, kp, None, (255, 0, 0), 4)
+    cv_image_gray = cv2.flip(cv_image_gray, 0)
+    cv_image_gray_crop = cv_image_gray[Y_OFFSET:IMG_HEIGHT - Y_OFFSET, X_OFFSET:IMG_WIDTH - X_OFFSET]
+    #kp, des = sift.detectAndCompute(cv_image_gray, None)
+    kp, des = sift.detectAndCompute(cv_image_gray_crop, None)
+    #cv_image_original = cv2.drawKeypoints(cv_image_gray, kp, None, (255, 0, 0), 4)
+    cv_image_original_crop = cv2.drawKeypoints(cv_image_gray_crop, kp, None, (255, 0, 0), 4)
     for i in range(0, 4):
         matches = flann.knnMatch(des, des_ideal[i], k = 2)
         result = compare_matches(kp, kp_ideal[i], matches)
@@ -54,11 +68,11 @@ def cbImageProjection(data):
         
     print(sign_msg.data)
     pub_sign.publish(sign_msg)
-    pub_image.publish(cvBridge.cv2_to_imgmsg(cv_image_original, "rgb8"))
+    pub_image.publish(cvBridge.cv2_to_imgmsg(cv_image_original_crop, "rgb8"))
+    t2 = time.time()
+    print(round((t2 - t1) * 1000))
 
 def compare_matches(kp, kp_ideal, matches):
-    MATCHES_ERR = 50000
-    MATCHES_DIST_MIN = 7
     good = []
     for m, n in matches:
         if m.distance < 0.7 * n.distance:
@@ -84,10 +98,10 @@ def standart_signs():
     dir_path = os.path.dirname(os.path.realpath(__file__))
     dir_path = dir_path.replace('kvantbot_contest/src', 'kvantbot_contest/')
     dir_path += 'data_set/detect_sign/'
-    img1 = cv2.imread(dir_path + 'stop.jpg', 0)
-    img2 = cv2.imread(dir_path + 'turn_left.jpg', 0)
-    img3 = cv2.imread(dir_path + 'turn_right.jpg', 0)
-    img4 = cv2.imread(dir_path + 'reversal.jpg', 0)
+    img1 = cv2.imread(dir_path + 'stop.png', 0)
+    img2 = cv2.imread(dir_path + 'turn_left.png', 0)
+    img3 = cv2.imread(dir_path + 'turn_right.png', 0)
+    img4 = cv2.imread(dir_path + 'reversal.png', 0)
     sift = cv2.SIFT_create()
     kp1, des1 = sift.detectAndCompute(img1, None)
     kp2, des2 = sift.detectAndCompute(img2, None)

@@ -5,6 +5,9 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
   std_msgs
+  image_transport
+  camera_info_manager
+  cv_bridge
 )
 
 catkin_package(
