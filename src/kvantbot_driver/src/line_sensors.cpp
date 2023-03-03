@@ -7,10 +7,10 @@
 #define L_LINE_SEN_EXP_PIN 6
 #define R_LINE_SEN_EXP_PIN 7
 
-#define L_LINE_SEN_REF_RAW_BLACK 2482
-#define L_LINE_SEN_REF_RAW_WHITE 258
-#define R_LINE_SEN_REF_RAW_BLACK 2337
-#define R_LINE_SEN_REF_RAW_WHITE 227
+#define L_LINE_SEN_REF_RAW_BLACK 2424
+#define L_LINE_SEN_REF_RAW_WHITE 282
+#define R_LINE_SEN_REF_RAW_BLACK 2218
+#define R_LINE_SEN_REF_RAW_WHITE 226
 
 typedef boost::chrono::steady_clock time_source;
 

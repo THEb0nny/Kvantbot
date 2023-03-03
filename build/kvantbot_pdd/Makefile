@@ -167,6 +167,48 @@ depend:
 	cd /home/ubuntu/ros_workspace/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
+# Convenience name for target.
+kvantbot_pdd/CMakeFiles/contest.dir/rule:
+	cd /home/ubuntu/ros_workspace/build && $(MAKE) -f CMakeFiles/Makefile2 kvantbot_pdd/CMakeFiles/contest.dir/rule
+.PHONY : kvantbot_pdd/CMakeFiles/contest.dir/rule
+
+# Convenience name for target.
+contest: kvantbot_pdd/CMakeFiles/contest.dir/rule
+
+.PHONY : contest
+
+# fast build rule for target.
+contest/fast:
+	cd /home/ubuntu/ros_workspace/build && $(MAKE) -f kvantbot_pdd/CMakeFiles/contest.dir/build.make kvantbot_pdd/CMakeFiles/contest.dir/build
+.PHONY : contest/fast
+
+src/contest.o: src/contest.cpp.o
+
+.PHONY : src/contest.o
+
+# target to build an object file
+src/contest.cpp.o:
+	cd /home/ubuntu/ros_workspace/build && $(MAKE) -f kvantbot_pdd/CMakeFiles/contest.dir/build.make kvantbot_pdd/CMakeFiles/contest.dir/src/contest.cpp.o
+.PHONY : src/contest.cpp.o
+
+src/contest.i: src/contest.cpp.i
+
+.PHONY : src/contest.i
+
+# target to preprocess a source file
+src/contest.cpp.i:
+	cd /home/ubuntu/ros_workspace/build && $(MAKE) -f kvantbot_pdd/CMakeFiles/contest.dir/build.make kvantbot_pdd/CMakeFiles/contest.dir/src/contest.cpp.i
+.PHONY : src/contest.cpp.i
+
+src/contest.s: src/contest.cpp.s
+
+.PHONY : src/contest.s
+
+# target to generate assembly for a file
+src/contest.cpp.s:
+	cd /home/ubuntu/ros_workspace/build && $(MAKE) -f kvantbot_pdd/CMakeFiles/contest.dir/build.make kvantbot_pdd/CMakeFiles/contest.dir/src/contest.cpp.s
+.PHONY : src/contest.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -180,6 +222,10 @@ help:
 	@echo "... edit_cache"
 	@echo "... install"
 	@echo "... test"
+	@echo "... contest"
+	@echo "... src/contest.o"
+	@echo "... src/contest.i"
+	@echo "... src/contest.s"
 .PHONY : help
 
 

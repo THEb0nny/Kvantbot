@@ -1,4 +1,9 @@
 <launch>
+	<param name="robot_description" command="$(find xacro)/xacro '$(find kvantbot_description)/urdf/Robot.xacro' --inorder"/>
+	<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen" />
+
 	<include file="$(find kvantbot_driver)/launch/cam.launch" />
+	<include file="$(find kvantbot_base)/launch/base.launch" />
+	<include file="$(find kvantbot_control)/launch/control.launch" />
 	<include file="$(find kvantbot_driver)/launch/drivers.launch" />
 </launch>

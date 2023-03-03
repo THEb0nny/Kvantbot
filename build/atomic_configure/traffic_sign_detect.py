@@ -3,7 +3,7 @@
 # generated from catkin/cmake/template/script.py.in
 # creates a relay to a python script source file, acting as that file.
 # The purpose is that of a symlink
-python_script = '/home/ubuntu/ros_workspace/src/kvantbot_contest/src/traffic_sign_detect.py'
+python_script = '/home/ubuntu/ros_workspace/src/kvantbot_pdd/src/traffic_sign_detect.py'
 with open(python_script, 'r') as fh:
     context = {
         '__builtins__': __builtins__,

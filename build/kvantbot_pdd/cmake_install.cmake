@@ -53,6 +53,6 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/kvantbot_pdd" TYPE PROGRAM FILES "/home/ubuntu/ros_workspace/build/kvantbot_pdd/catkin_generated/installspace/traffic_sign_detect_old.py")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/kvantbot_pdd" TYPE PROGRAM FILES "/home/ubuntu/ros_workspace/build/kvantbot_pdd/catkin_generated/installspace/traffic_sign_detect.py")
 endif()
 

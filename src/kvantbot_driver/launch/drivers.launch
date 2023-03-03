@@ -5,4 +5,5 @@
 	<node name="line_sensors" pkg="kvantbot_driver" type="line_sensors" output="screen" />
 	<node name="btn_module" pkg="kvantbot_driver" type="btn_module" output="screen" />
 	<node name="buzzer_module" pkg="kvantbot_driver" type="buzzer_module" output="screen" />
+	<include file="$(find mb_1r2t_ros)/launch/init.launch" />
 </launch>
