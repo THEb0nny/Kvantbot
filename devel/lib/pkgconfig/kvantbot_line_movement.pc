@@ -1,8 +1,0 @@
-prefix=/home/ubuntu/ros_workspace/devel
-
-Name: kvantbot_line_movement
-Description: Description of kvantbot_line_movement
-Version: 0.1.0
-Cflags: 
-Libs: -L${prefix}/lib 
-Requires: 
